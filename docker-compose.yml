@@ -1,0 +1,29 @@
+
+
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: Snehal123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: fintech_db
+    ports:
+      - "5432:5432"  # Maps container port 5432 to host port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  graphql-engine:
+    image: hasura/graphql-engine:v2.0.10
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:Snehal123@postgres:5432/fintech_db
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"  # Enable console
+      HASURA_GRAPHQL_ADMIN_SECRET: mypFV0JkCBCsiab9EAdNCu4tQgYZXeLxrRk2NMHQy4GRnQHK1i0P2UEuen9qEkb6
+
+volumes:
+  postgres_data:
